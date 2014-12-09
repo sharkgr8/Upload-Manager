@@ -1,0 +1,24 @@
+{
+    "name": "shark/upload-manager",
+    "description": "Upload Manager for handling chunk uploads. Works with flow.js html5 file uploads.",
+    "authors": [
+        {
+            "name": "Shark",
+            "email": "shariqueit@yahoo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "illuminate/view": "4.2.x",
+        "flowjs/flow-php-server" : "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Shark\\UploadManager\\": "src/"
+        }
+    }
+}
