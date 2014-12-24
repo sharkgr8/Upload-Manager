@@ -6,9 +6,11 @@
     <script src="{{ URL::asset('packages/shark/upload-manager/js/angular.min.js') }}"></script>
     <script src="{{ URL::asset('packages/shark/upload-manager/js/ng-flow-standalone.min.js') }}"></script>
     <script src="{{ URL::asset('packages/shark/upload-manager/js/fusty-flow.min.js') }}"></script>
+    <script src="{{ URL::asset('packages/shark/upload-manager/js/ng-tags-input.min.js') }}"></script>
     <script src="{{ URL::asset('packages/shark/upload-manager/js/promise-tracker.js') }}"></script>
     <script src="{{ URL::asset('packages/shark/upload-manager/js/app.js') }}"></script>
     <link href="{{ URL::asset('packages/shark/upload-manager/css/bootstrap-combined.min.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ URL::asset('packages/shark/upload-manager/css/ng-tags-input.min.css') }}">  
     <style>
         @-moz-document url-prefix() {
             fieldset { display: table-cell; }
@@ -51,8 +53,8 @@ Upload Folder
     <div class="row">
         <div class="span12">
              <div id="messages" class="alert alert-success" ng-show="uploadFrm.messages" ng-bind="uploadFrm.messages"></div>
-            <div data-ng-show="uploadFrm.progress.active()" style="color: red; font-size: 50px;">Sending&hellip;</div>
-    <form name="uploadFieldFrm" id="uploadFieldFrm" role="form" novalidate>
+            <div data-ng-show="uploadFrm.progress.active()" style="color: red; font-size: 20px;">Sending&hellip;</div>
+            <form name="uploadFieldFrm" id="uploadFieldFrm" role="form" class="form-inline" novalidate>
     <div class="table-responsive">
     <table class="table table-hover table-bordered table-striped" flow-transfers>
         <thead>
@@ -95,19 +97,35 @@ Upload Folder
         </tr>
         
         <tr ng-repeat-end ng-show="file.isComplete()" class="form-group" >
-            <td><input type="hidden" name="filenames[]" ng-model="uploadFrm.filenames[$index]" ng-init="uploadFrm.filenames[$index]=file.name"   /></td>
-            <td colspan="2" ><input type="text" name="titles[]" class="form-control col-xs-6" placeholder="Enter title" ng-model="uploadFrm.titles[$index]" required />
-                <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
-                <span ng-show="uploadFrm.title[$index].$error.required">Title is required.</span>
-                </span></td>
-            <td colspan="2" ><input type="text" name="tags[]" class="form-control col-xs-6" placeholder="Enter tags" ng-model="uploadFrm.tags[$index]" /></td>
+            
+                <td colspan="5">
+                    <ng-form name="uploadSubForm">
+                    <div class="row">
+                        
+                        <div class="span5">
+                            <label for="titles" >Enter Title:</label>
+                            <input type="text" name="titles" class="form-control span3" placeholder="Enter title" ng-model="uploadFrm.titles[$index]" required />
+                            <span class="label btn-danger" ng-show="uploadFrm.submitted && uploadSubForm.titles.$error.required">Required!</span>
+                            <input type="hidden" name="filenames" ng-model="uploadFrm.filenames[$index]" ng-init="uploadFrm.filenames[$index]=file.name"   />
+                        </div>
+                        <div class="span6"><label class="pull-left" for="titles" >Enter Tags:</label>
+                            <tags-input class="form-control span4" ng-model="uploadFrm.tags[$index]">
+                                <auto-complete source="uploadFrm.loadTags($query)"></auto-complete>
+                              </tags-input>
+
+<!--                            <input type="text" name="tags" class="form-control col-xs-6" placeholder="Enter tags" ng-model="uploadFrm.tags[$index]" />-->
+                            </div>
+                    </div>
+                    </ng-form>
+                </td>
+            
         </tr>
-        
+         
         </tbody>
     </table>
     </div>
     <div class="row">
-        <div class="span12"><button class="btn btn-medium btn-success right" ng-click="uploadFrm.submit(uploadFieldFrm)" ng-disabled="uploadFrm.$invalid">Save</button></div>
+        <div class="span12"><button class="btn btn-medium btn-success right" ng-click="uploadFrm.submit(uploadFieldFrm,$flow)" ng-disabled="uploadFrm.progress.active()">Save</button></div>
     </div>
     </form>
     </div>

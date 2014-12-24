@@ -14,7 +14,7 @@ function fustyFlowFactory(opts) {
  * @name app
  * @type {angular.Module}
  */
-var app = angular.module('audioApp', ['flow','ajoslin.promise-tracker'], function ($interpolateProvider) {
+var app = angular.module('audioApp', ['flow','ajoslin.promise-tracker','ngTagsInput'], function ($interpolateProvider) {
     //To accomodate Laravel Blade Template
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
@@ -31,7 +31,7 @@ var app = angular.module('audioApp', ['flow','ajoslin.promise-tracker'], functio
         $scope.uploadFrm.progress = promiseTracker();
 
     // Form submit handler.
-    $scope.uploadFrm.submit = function(form) {
+    $scope.uploadFrm.submit = function(form, flow) {
       // Trigger validation flag.
       $scope.uploadFrm.submitted = true;
 
@@ -56,6 +56,7 @@ var app = angular.module('audioApp', ['flow','ajoslin.promise-tracker'], functio
             $scope.uploadFrm.tags  = [];
             $scope.uploadFrm.messages = 'Your form has been sent!';
             $scope.uploadFrm.submitted = false;
+            flow.cancel();
           } else {
             $scope.uploadFrm.messages = 'Oops, we received your request, but there was an error processing it.';
             console.log(data);
@@ -76,22 +77,11 @@ var app = angular.module('audioApp', ['flow','ajoslin.promise-tracker'], functio
       // Track the request and show its progress to the user.
       $scope.uploadFrm.progress.addPromise($promise);
   };
-//        $scope.uploadFrm.submitTheForm = function(item, event) {
-//          console.log("--> Submitting form");
-//          var dataObject = {
-//             filenames : $scope.uploadFrm.filenames
-//             ,titles  : $scope.uploadFrm.titles
-//             ,tags : $scope.uploadFrm.tags   
-//          };
-//
-//          var responsePromise = $http.post("saveToDB", dataObject, {});
-//          responsePromise.success(function(dataFromServer, status, headers, config) {
-//             console.log(dataFromServer);
-//          });
-//           responsePromise.error(function(data, status, headers, config) {
-//             alert("Submitting form failed!");
-//          });
-//        }
+
+        $scope.uploadFrm.loadTags = function(query) {
+            return $http.get('tags?query=' + query);
+            //return $http.get('packages/shark/upload-manager/data/tags.json');
+          };
 
         
         $scope.cancelUpload = function(files, bulk) {
