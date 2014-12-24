@@ -3,6 +3,7 @@
 use View;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 class UploadManager {
 
@@ -47,6 +48,15 @@ class UploadManager {
         exit;
     }
 
+    public function saveToDB() 
+    {
+        if (Request::isMethod('post'))
+        {
+            $input = Input::all();
+            return array('status'=>'OK', 'msg' => var_export($input, true));
+        }
+    }
+    
     public function removeFiles()
     {
        $filenames =  Input::get('filenames');
