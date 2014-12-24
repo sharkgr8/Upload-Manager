@@ -12,6 +12,7 @@ return [
 */
 'files_directory' => 'uploads/',
 
+'temp_files_dir' => 'temp/',    
 /**
 * Set to TRUE if want sub directories by Model to be created in the
 * upload folder. FALSE if you want to have them all in the root.

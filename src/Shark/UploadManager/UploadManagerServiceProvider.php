@@ -36,7 +36,7 @@ class UploadManagerServiceProvider extends ServiceProvider {
 
         $this->app->booting(function() {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('UploadManager', 'Shark\UploadManager\facades\UploadManager');
+            $loader->alias('UploadManager', 'Shark\UploadManager\Facades\UploadManager');
         });
 	}
 
