@@ -20,3 +20,13 @@ Route::post('removeFiles', function()
 {
     return UploadManager::removeFiles();
 });
+
+Route::post('saveToDB', function()
+{
+    return UploadManager::saveToDB();
+});
+
+Route::get('tags', function()
+{
+    return UploadManager::getTags();
+});
